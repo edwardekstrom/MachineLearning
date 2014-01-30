@@ -76,11 +76,13 @@ public class Perceptron_Head{
 			_epoch++;
 		}
 		
-		System.out.println("Number of Epochs Required: " + _epoch);
-		for(int i = 0 ; i < _bestEpoch._weights.length; i++){
-			System.out.println(_bestEpoch._weights[i]);
-		}
+//		System.out.println("Number of Epochs Required: " + _epoch);
+//		for(int i = 0 ; i < _bestEpoch._weights.length; i++){
+//			System.out.println(_bestEpoch._weights[i]);
+//		}
 //		System.out.println(_epoch);
+		
+		//hello
 	}
 
 	public void predict(double[] features, double[] labels) throws Exception {

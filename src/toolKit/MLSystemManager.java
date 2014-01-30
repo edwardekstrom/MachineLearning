@@ -31,7 +31,7 @@ public class MLSystemManager {
 //		./MLSystemManager -L [LearningAlgorithm] -A [ARFF_File] -E random [PercentageForTraining]
 //		args = new String[]{"-L", "baseline", "-A", "data/iris.arff", "-E", "cross", "10", "-N"};
 //		args = new String[]{"-L", "perceptron", "-A", "data/voting.arff", "-E", "cross", "10", "-N"};
-		args = new String[]{"-L", "perceptron", "-A", "data/iris.arff", "-E", "random", ".7", "-N"};
+		args = new String[]{"-L", "perceptron", "-A", "data/voting.arff", "-E", "random", ".7", "-N"};
 //		args = new String[]{"-L", "perceptron", "-A", "data/iris.arff", "-E", "cross", "10", "-N"};
 //		args = new String[]{"-L", "perceptron", "-A", "data/voting.arff", "-E", "training", "-N"};
 //		args = new String[]{"-L", "perceptron", "-A", "data/linearlySeparable.arff", "-E", "training", "-N"};
