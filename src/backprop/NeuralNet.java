@@ -5,12 +5,12 @@ import java.util.Random;
 import toolKit.Matrix;
 import toolKit.SupervisedLearner;
 
-public class Backprop extends SupervisedLearner {
+public class NeuralNet extends SupervisedLearner {
 	private Integer[] _structure;
 	private int _numInputNodes;
 	private int _numOutputNodes;
 	
-	public Backprop(Random rand, Integer[] structure){
+	public NeuralNet(Random rand, Integer[] structure){
 		_structure = structure;
 		_numInputNodes = _structure[0];
 		_numOutputNodes = _structure[_structure.length];

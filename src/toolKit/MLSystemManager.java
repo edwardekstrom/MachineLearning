@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.io.File;
 
-import backprop.Backprop;
+import backprop.NeuralNet;
 import perceptron.Perceptron;
 
 
@@ -22,7 +22,7 @@ public class MLSystemManager {
 	{
 		if (model.equals("baseline")) return new BaselineLearner();
 		//else if (model.equals("perceptron")) return new Perceptron(rand);
-		else if (model.equals("neuralnet")) return new Backprop(rand, new Integer[3]);
+		else if (model.equals("neuralnet")) return new NeuralNet(rand, new Integer[3]);
 		// else if (model.equals("decisiontree")) return new DecisionTree();
 		// else if (model.equals("knn")) return new InstanceBasedLearner();
 		else throw new Exception("Unrecognized model: " + model);
