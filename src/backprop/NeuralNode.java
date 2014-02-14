@@ -1,5 +1,7 @@
 package backprop;
 
-public class NeuralNode {
-
+public interface NeuralNode {
+	
+	public void getOutput();
+	
 }
