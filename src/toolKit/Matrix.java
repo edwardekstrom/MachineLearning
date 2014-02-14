@@ -1,9 +1,9 @@
+package toolKit;
+
 // ----------------------------------------------------------------
 // The contents of this file are distributed under the CC0 license.
 // See http://creativecommons.org/publicdomain/zero/1.0/
 // ----------------------------------------------------------------
-
-package toolKit;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -206,7 +206,7 @@ public class Matrix {
 	public void set(int r, int c, double v) { row(r)[c] = v; }
 
 	// Returns the name of the specified attribute
-	public String attrName(int col) { return m_attr_name.get(col); }
+	String attrName(int col) { return m_attr_name.get(col); }
 
 	// Set the name of the specified attribute
 	void setAttrName(int col, String name) { m_attr_name.set(col, name); }
@@ -229,7 +229,7 @@ public class Matrix {
 	}
 
 	// Shuffles the row order with a buddy matrix 
-	public void shuffle(Random rand, Matrix buddy) {
+	void shuffle(Random rand, Matrix buddy) {
 		for (int n = rows(); n > 0; n--) {
 			int i = rand.nextInt(n);
 			double[] tmp = row(n - 1);
