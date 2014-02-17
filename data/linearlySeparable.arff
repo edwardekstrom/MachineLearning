@@ -1,0 +1,13 @@
+@relation linearlySep
+@attribute attOne REAL
+@attribute attTwo REAL
+@attribute class {zero,one}
+@data
+-1,-.5,zero
+-.9,-.34,zero
+-.98,-.66,zero
+-.89,-1,zero
+.55,.88,one
+.64,.94,one
+.45,.85,one
+.88,.84,one
