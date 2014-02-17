@@ -1,7 +1,9 @@
 package backprop;
 
-public class NeuralLayer {
-	public NeuralLayer(){
-		
-	}
+public interface NeuralLayer {
+	
+	public NeuralNode[] getNodes();
+	
+	public void connectToLayer(NeuralLayerI nl);
+	
 }
