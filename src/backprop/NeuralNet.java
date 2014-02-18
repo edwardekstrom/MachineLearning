@@ -9,14 +9,14 @@ public class NeuralNet extends SupervisedLearner {
 	static double LEARNING_RATE = .1;
 	
 	private Random _rand;
-	private Integer[] _structure;
+	private int[] _structure;
 	private int _numInputNodes;
 	private int _numOutputNodes;
 	private NeuralLayerI[] _layers;
 	
 	private double _expectedOutput;
 	
-	public NeuralNet(Random rand, Integer[] structure){
+	public NeuralNet(Random rand, int[] structure){
 		_rand = rand;
 		_structure = structure;
 		_numInputNodes = _structure[0];
