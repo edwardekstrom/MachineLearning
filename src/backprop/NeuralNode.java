@@ -22,6 +22,8 @@ public interface NeuralNode {
 	
 	public double getDeltaSum();
 	
+//	public double getDeltaSum(NeuralNode node);
+	
 	public void update();
 	
 }

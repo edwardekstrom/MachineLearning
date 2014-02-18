@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.io.File;
 
-import backprop.NeuralNet;
+import backpropagation.NeuralNet;
 import perceptron.Perceptron;
 
 
@@ -20,12 +20,12 @@ public class MLSystemManager {
 	 */
 	public SupervisedLearner getLearner(String model, Random rand) throws Exception
 	{
-		Integer[] structure = new Integer[3];
-		structure[0] = 5; structure[1] = 9; structure[2] = 3;
+		int[] structure = {4, 8, 3};
+//		int[] structure = {13, 26, 10};
 		
 		if (model.equals("baseline")) return new BaselineLearner();
 		else if (model.equals("perceptron")) return new Perceptron(rand);
-		else if (model.equals("neuralnet")) return new NeuralNet(rand, structure);
+		else if (model.equals("neuralnet")) return new NeuralNet(structure);
 		// else if (model.equals("decisiontree")) return new DecisionTree();
 		// else if (model.equals("knn")) return new InstanceBasedLearner();
 		else throw new Exception("Unrecognized model: " + model);
@@ -34,10 +34,12 @@ public class MLSystemManager {
 	public void run(String[] args) throws Exception {
 //		./MLSystemManager -L [LearningAlgorithm] -A [ARFF_File] -E random [PercentageForTraining]
 //		args = new String[]{"-L", "baseline", "-A", "data/iris.arff", "-E", "cross", "10", "-N"};
-		args = new String[]{"-L", "neuralnet", "-A", "data/iris.arff", "-E", "cross", "10", "-N"};
-//		args = new String[]{"-L", "neuralnet", "-A", "data/iris.arff", "-E", "random", ".75", "-N"};
+//		args = new String[]{"-L", "neuralnet", "-A", "data/iris.arff", "-E", "cross", "10", "-N"};
+//		args = new String[]{"-L", "neuralnet", "-A", "data/vowel.arff", "-E", "training"};
+//		args = new String[]{"-L", "neuralnet", "-A", "data/test.arff", "-E", "training"};
+		args = new String[]{"-L", "neuralnet", "-A", "data/iris.arff", "-E", "random", ".75", "-N"};
 //		args = new String[]{"-L", "perceptron", "-A", "data/iris.arff", "-E", "cross", "10", "-N"};
-//		args = new String[]{"-L", "perceptron", "-A", "data/voting.arff", "-E", "training", "-N"};
+//		args = new String[]{"-L", "perceptron", "-A", "data/iris.arff", "-E", "training", "-N"};
 //		args = new String[]{"-L", "perceptron", "-A", "data/linearlySeparable.arff", "-E", "training", "-N"};
 //		args = new String[]{"-L", "perceptron", "-A", "data/notLinearlySeparable.arff", "-E", "training", "-N"};
 

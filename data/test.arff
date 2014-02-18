@@ -1,0 +1,7 @@
+@relation linearlySep
+@attribute attOne REAL
+@attribute attTwo REAL
+@attribute class {0,1}
+@data
+0.0,0,1
+0.0,1,0

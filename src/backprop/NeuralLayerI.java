@@ -42,7 +42,7 @@ public class NeuralLayerI implements NeuralLayer {
 			
 			for (int i = 0; i < _nodes.length; i++) {
 				for (int j = 0; j < nextLayerNodes.length; j++) {
-					double nextRand = _rand.nextDouble() * .5;
+					double nextRand = _rand.nextDouble();// * (-1^_rand.nextInt(2));
 					_nodes[i].setWeigthTo(nextLayerNodes[j], nextRand);
 				}
 			}
@@ -51,7 +51,7 @@ public class NeuralLayerI implements NeuralLayer {
 			
 			for (int i = 0; i < _nodes.length; i++) {
 				for (int j = 0; j < nextLayerNodes.length - 1; j++) {
-					double nextRand = _rand.nextDouble() * (-1^_rand.nextInt(2));
+					double nextRand = _rand.nextDouble();// * (-1^_rand.nextInt(2));
 					_nodes[i].setWeigthTo(nextLayerNodes[j], nextRand);
 				}
 			}

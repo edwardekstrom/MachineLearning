@@ -361,4 +361,14 @@ public class Matrix {
 			System.out.println("");
 		}
 	}
+	
+	public double[][] getTwoDemensionalArray(){
+		double[][] array = new double[m_data.size()][];
+		
+		for(int i = 0; i < m_data.size(); i++){
+			double[] row = m_data.get(i);
+			array[i] = row;
+		}
+		return array;
+	}
 }

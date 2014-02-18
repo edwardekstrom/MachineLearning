@@ -14,6 +14,8 @@ public class NeuralNet extends SupervisedLearner {
 	private int _numOutputNodes;
 	private NeuralLayerI[] _layers;
 	
+	private double _expectedOutput;
+	
 	public NeuralNet(Random rand, Integer[] structure){
 		_rand = rand;
 		_structure = structure;
@@ -23,7 +25,7 @@ public class NeuralNet extends SupervisedLearner {
 		_layers = new NeuralLayerI[_structure.length];
 		
 		for(int i = 0; i < structure.length - 1; i++){
-			_layers[i] = new NeuralLayerI(_structure[i] + 1, rand, false);
+			_layers[i] = new NeuralLayerI(_structure[i], rand, false);
 		}
 		_layers[_layers.length - 1] = new NeuralLayerI(_structure[_structure.length - 1], rand, true);
 		
@@ -47,13 +49,21 @@ public class NeuralNet extends SupervisedLearner {
 				
 				if(hypothesis != labels.get(i, 0)) missedHypotheses++;
 				
-				
+//				_expectedOutput = labels.get(i, 0);
 				updateWeights(instance._labels);
 			}
 //			features.shuffle(_rand, labels);
 			epochsWithoutImprovement++;
 		}
 	}
+	
+//	public void updateWeights() {
+//
+//
+//		CalculateSignalErrors();
+//		BackPropagateError();
+//
+//	}
 
 	private void updateWeights(double[] labels) {
 		
@@ -104,6 +114,9 @@ public class NeuralNet extends SupervisedLearner {
 			}
 		}
 	}
+	
+
+
 
 	@Override
 	public void predict(double[] features, double[] labels) throws Exception {
@@ -125,14 +138,28 @@ public class NeuralNet extends SupervisedLearner {
 			NeuralLayerI prevLayer = _layers[i - 1];
 			NeuralNode[] prevNodes = prevLayer.getNodes();
 			
-			
-			for(int j = 0; j < curNodes.length - 1; j++){
-				double net = 0;
-				for(int k = 0; k < prevNodes.length; k++){
-					net+= prevNodes[k].getOutput() * prevNodes[k].getWeightTo(curNodes[j]);
+			if(curLayer._isOutputLayer){
+				for (int j = 0; j < curNodes.length; j++) {
+					double net = 0;
+					for (int k = 0; k < prevNodes.length; k++) {
+						net += prevNodes[k].getOutput()
+								* prevNodes[k].getWeightTo(curNodes[j]);
+					}
+					curNodes[j].setNet(net);
+					curNodes[j]
+							.setOutput(((double) 1.0) / (1 + Math.exp(-net)));
 				}
-				curNodes[j].setNet(net);
-				curNodes[j].setOutput( ( (double)1.0 ) / (1 + Math.exp(-net) ) );
+			} else {
+				for (int j = 0; j < curNodes.length - 1; j++) {
+					double net = 0;
+					for (int k = 0; k < prevNodes.length; k++) {
+						net += prevNodes[k].getOutput()
+								* prevNodes[k].getWeightTo(curNodes[j]);
+					}
+					curNodes[j].setNet(net);
+					curNodes[j]
+							.setOutput(((double) 1.0) / (1 + Math.exp(-net)));
+				}
 			}
 		}
 		
@@ -145,8 +172,81 @@ public class NeuralNet extends SupervisedLearner {
 				toReturn = (double)i;
 			}
 		}
+//		System.out.println(toReturn);
 		return toReturn;
 	}
 	
+	
+//	private void CalculateSignalErrors() {
+//
+//		int i,j,k,OutputLayer;
+//		double Sum;
+//
+//		OutputLayer = _layers.length-1;
+//
+//	       	// Calculate all output signal error
+//		for (i = 0; i < _layers[OutputLayer].getNodes().length; i++){
+//			double temp;
+//			if(i == _expectedOutput) temp = 1;
+//			else temp = 0;
+//			_layers[OutputLayer].getNodes()[i].setDelta( 
+//				 (temp - 
+//					_layers[OutputLayer].getNodes()[i].getOutput()) * 
+//					_layers[OutputLayer].getNodes()[i].getOutput() * 
+//					(1-_layers[OutputLayer].getNodes()[i].getOutput())   );
+//		}
+//
+//	       	// Calculate signal error for all nodes in the hidden layer
+//		// (back propagate the errors)
+//		for (i = _layers.length-2; i > 0; i--) {
+//			for (j = 0; j < _layers[i].getNodes().length; j++) {
+//				Sum = 0;
+//
+//				for (k = 0; k < _layers[i+1].getNodes().length; k++)
+//					Sum = Sum + _layers[i].getNodes()[j].getWeightTo(_layers[i+1].getNodes()[k]) * 
+//						_layers[i+1].getNodes()[k].getDelta();
+//
+//				_layers[i].getNodes()[j].setDelta( 
+//					 _layers[i].getNodes()[j].getOutput()*(1 - 
+//						_layers[i].getNodes()[j].getOutput())*Sum );
+//			}
+//		}
+//
+//	}
+//	
+//	private void BackPropagateError() {
+//
+//		int i,j,k;
+//
+//		// Update Weights
+//		for (i = _layers.length-1; i > 0; i--) {
+//			for (j = 0; j < _layers[i].getNodes().length; j++) {
+//				// Calculate Bias weight difference to node j
+//				Layer[i].Node[j].ThresholdDiff 
+//					= LearningRate * 
+//					Layer[i].Node[j].SignalError + 
+//					Momentum*Layer[i].Node[j].ThresholdDiff;
+//
+//				// Update Bias weight to node j
+//				Layer[i].Node[j].Threshold = 
+//					Layer[i].Node[j].Threshold + 
+//					Layer[i].Node[j].ThresholdDiff;
+//
+//				// Update Weights
+//				for (k = 0; k < Layer[i].Input.length; k++) {
+//					// Calculate weight difference between node j and k
+//					Layer[i].Node[j].WeightDiff[k] = 
+//						LearningRate * 
+//						Layer[i].Node[j].SignalError*Layer[i-1].Node[k].Output +
+//						Momentum*Layer[i].Node[j].WeightDiff[k];
+//
+//					// Update weight between node j and k
+//					Layer[i].Node[j].Weight[k] = 
+//						Layer[i].Node[j].Weight[k] + 
+//						Layer[i].Node[j].WeightDiff[k];
+//				}
+//			}
+//		}
+//	}
 	
 }

@@ -53,6 +53,8 @@ public class NeuralNodeI implements NeuralNode {
 
 	@Override
 	public void setToUpdate(NeuralNode node, double updateValue) {
+//		System.out.println(updateValue);
+//		if(updateValue < 0) updateValue = 0;
 		_toUpdate.put(node, updateValue);
 	}
 
@@ -74,6 +76,16 @@ public class NeuralNodeI implements NeuralNode {
 		}
 		return sum;
 	}
+	
+//	@Override
+//	public double getDeltaSum(NeuralNode node) {
+//		double sum = 0;
+//		for(NeuralNode nn : _weightsMap.keySet()){
+//			sum += nn.getDelta() * _weightsMap.get(nn);
+//		}
+//		sum += node.getDelta() * _weightsMap.get(node);
+//		return sum;
+//	}
 
 	@Override
 	public void update() {
