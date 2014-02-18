@@ -7,11 +7,11 @@ import toolKit.SupervisedLearner;
 public class NeuralNet extends SupervisedLearner {
 	static double LEARNING_RATE = .1;
 	static double MOMENTUM = 0;
-	static long EPOCHS_LIMIT = 1000;
+	static long EPOCHS_LIMIT = 100;
 
 	private double _totalError;
-	private double _targetOutput[][];
 	private double _trainingInput[][];
+	private double _targetOutput[][];
 	private int _numLayers;
 	private int _numTrainingInstances;
 	private int _curTrainingInstance;
@@ -20,11 +20,8 @@ public class NeuralNet extends SupervisedLearner {
 	public double _outputs[][];
 
 	public NeuralNet(int[] networkStructure) {
-
 		_numLayers = networkStructure.length;
-
 		_layers = new NeuralLayer[_numLayers];
-
 		_layers[0] = new NeuralLayer(networkStructure[0], networkStructure[0]);
 
 		for (int i = 1; i < _numLayers; i++) {
@@ -82,7 +79,7 @@ public class NeuralNet extends SupervisedLearner {
 
 	@Override
 	public void predict(double[] features, double[] labels) throws Exception {
-		labels[0] = test(features);
+		labels[0] = inferOutput(features);
 
 	}
 
@@ -92,16 +89,15 @@ public class NeuralNet extends SupervisedLearner {
 
 		_layers[1]._inputFromPrev = _layers[0]._inputFromPrev;
 		for (int i = 1; i < _numLayers; i++) {
-			_layers[i].calculateInstance();
+			_layers[i].calculateNodeOutputs();
 
 			if (i != _numLayers - 1)
-				_layers[i + 1]._inputFromPrev = _layers[i].resultArray();
+				_layers[i + 1]._inputFromPrev = _layers[i].getArrayOfOutputs();
 		}
 
 	}
 
 	public void updateWeights() {
-
 		calculateWeightUpdates();
 		update();
 
@@ -113,17 +109,13 @@ public class NeuralNet extends SupervisedLearner {
 
 		outputLayer = _numLayers - 1;
 
-		// Calculate all output error
 		for (i = 0; i < _layers[outputLayer]._nodes.length; i++) {
 			NeuralNode curNode = _layers[outputLayer]._nodes[i];
-			
+
 			curNode._outputError = (_targetOutput[_curTrainingInstance][i] - curNode._output)
-					* curNode._output
-					* (1 - curNode._output);
+					* curNode._output * (1 - curNode._output);
 		}
 
-		// Calculate error for all nodes in the hidden layer
-		// (back propagate the errors)
 		for (i = _numLayers - 2; i > 0; i--) {
 			for (j = 0; j < _layers[i]._nodes.length; j++) {
 				Sum = 0;
@@ -132,7 +124,8 @@ public class NeuralNet extends SupervisedLearner {
 					Sum = Sum + _layers[i + 1]._nodes[k]._weightsFrom[j]
 							* _layers[i + 1]._nodes[k]._outputError;
 
-				_layers[i]._nodes[j]._outputError = _layers[i]._nodes[j]._output
+				_layers[i]._nodes[j]._outputError = 
+						_layers[i]._nodes[j]._output
 						* (1 - _layers[i]._nodes[j]._output) * Sum;
 			}
 		}
@@ -148,12 +141,14 @@ public class NeuralNet extends SupervisedLearner {
 				NeuralNode curNode = _layers[i]._nodes[j];
 
 				for (k = 0; k < _layers[i]._inputFromPrev.length; k++) {
-					curNode._weightUpdates[k] = LEARNING_RATE
+					curNode._weightUpdates[k] = 
+							LEARNING_RATE
 							* curNode._outputError
 							* _layers[i - 1]._nodes[k]._output + MOMENTUM
 							* curNode._weightUpdates[k];
 
-					curNode._weightsFrom[k] = curNode._weightsFrom[k]
+					curNode._weightsFrom[k] = 
+							curNode._weightsFrom[k]
 							+ curNode._weightUpdates[k];
 				}
 			}
@@ -195,12 +190,12 @@ public class NeuralNet extends SupervisedLearner {
 			}
 
 			k++;
-			//getTotalError();
+			getTotalError();
 		} while (k < EPOCHS_LIMIT);
 
 	}
 
-	public int test(double[] input) {
+	public int inferOutput(double[] input) {
 		int toReturn = 0;
 		NeuralNode[] outputNodes;
 
@@ -210,7 +205,7 @@ public class NeuralNet extends SupervisedLearner {
 
 		propagateInput();
 
-		outputNodes = (_layers[_layers.length - 1]).get_nodes();
+		outputNodes = (_layers[_layers.length - 1])._nodes;
 
 		for (int i = 0; i < outputNodes.length; i++) {
 			if (outputNodes[toReturn]._output < outputNodes[i]._output) {
