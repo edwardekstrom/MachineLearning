@@ -229,7 +229,7 @@ public class Matrix {
 	}
 
 	// Shuffles the row order with a buddy matrix 
-	void shuffle(Random rand, Matrix buddy) {
+	public void shuffle(Random rand, Matrix buddy) {
 		for (int n = rows(); n > 0; n--) {
 			int i = rand.nextInt(n);
 			double[] tmp = row(n - 1);

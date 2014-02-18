@@ -19,4 +19,9 @@ public class BackpropInstance {
 			_labels[i] = labels.get(row, i);
 		}
 	}
+	
+	public BackpropInstance(double[] f, double[] l){
+		_features = f;
+		_labels = l;
+	}
 }

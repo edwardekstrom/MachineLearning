@@ -22,7 +22,10 @@ public class NeuralLayerI implements NeuralLayer {
 		}
 		
 		if(!isOutputLayer){
-			_nodes[numNodes - 1] = new BiasNode();
+			NeuralNodeI node = new NeuralNodeI();
+			node.setOutput(1);
+			node.setNet(1);
+			_nodes[numNodes - 1] = node;
 		}
 	}
 
@@ -36,19 +39,23 @@ public class NeuralLayerI implements NeuralLayer {
 		NeuralNode[] nextLayerNodes = nl.getNodes();
 		
 		if (nl._isOutputLayer) {
+			
 			for (int i = 0; i < _nodes.length; i++) {
 				for (int j = 0; j < nextLayerNodes.length; j++) {
 					double nextRand = _rand.nextDouble() * .5;
 					_nodes[i].setWeigthTo(nextLayerNodes[j], nextRand);
 				}
 			}
+			
 		}else{
+			
 			for (int i = 0; i < _nodes.length; i++) {
 				for (int j = 0; j < nextLayerNodes.length - 1; j++) {
-					double nextRand = _rand.nextDouble() * .5;
+					double nextRand = _rand.nextDouble() * (-1^_rand.nextInt(2));
 					_nodes[i].setWeigthTo(nextLayerNodes[j], nextRand);
 				}
 			}
+			
 		}
 	}
 
