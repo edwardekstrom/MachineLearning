@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.io.File;
 
-import backpropagation.NeuralNet;
+import backprop.NeuralNet;
 import perceptron.Perceptron;
 
 
