@@ -20,8 +20,8 @@ public class MLSystemManager {
 	 */
 	public SupervisedLearner getLearner(String model, Random rand) throws Exception
 	{
-//		int[] structure = {4, 8, 3};
-		int[] structure = {13, 26, 10};
+		int[] structure = {4, 8, 3};
+//		int[] structure = {13, 26, 10};
 		
 		if (model.equals("baseline")) return new BaselineLearner();
 		else if (model.equals("perceptron")) return new Perceptron(rand);
@@ -37,8 +37,8 @@ public class MLSystemManager {
 //		args = new String[]{"-L", "neuralnet", "-A", "data/iris.arff", "-E", "cross", "10", "-N"};
 //		args = new String[]{"-L", "neuralnet", "-A", "data/vowel.arff", "-E", "training"};
 //		args = new String[]{"-L", "neuralnet", "-A", "data/test.arff", "-E", "training"};
-//		args = new String[]{"-L", "neuralnet", "-A", "data/iris.arff", "-E", "random", ".75", "-N"};
-		args = new String[]{"-L", "neuralnet", "-A", "data/vowel.arff", "-E", "random", ".75", "-N"};
+		args = new String[]{"-L", "neuralnet", "-A", "data/iris.arff", "-E", "random", ".75", "-N"};
+//		args = new String[]{"-L", "neuralnet", "-A", "data/vowel.arff", "-E", "random", ".75", "-N"};
 //		args = new String[]{"-L", "perceptron", "-A", "data/iris.arff", "-E", "cross", "10", "-N"};
 //		args = new String[]{"-L", "perceptron", "-A", "data/iris.arff", "-E", "training", "-N"};
 //		args = new String[]{"-L", "perceptron", "-A", "data/linearlySeparable.arff", "-E", "training", "-N"};
