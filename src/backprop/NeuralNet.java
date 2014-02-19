@@ -7,14 +7,28 @@ import toolKit.SupervisedLearner;
 public class NeuralNet extends SupervisedLearner {
 	static double LEARNING_RATE = .1;
 	static double MOMENTUM = 0;
-	static long EPOCHS_LIMIT = 100;
+	static int EPOCHS_WITHOUT_UPDATE_LIMIT = 1000;
+	static double VALIDATION_SET_PERCENTAGE = .1;
 
 	private double _totalError;
+	private String _totalErrorString = "";
 	private double _trainingInput[][];
 	private double _targetOutput[][];
 	private int _numLayers;
 	private int _numTrainingInstances;
 	private int _curTrainingInstance;
+	private int _misClassified;
+	private int _lowestMisClass = Integer.MAX_VALUE;
+	private int _epochsWithoutUpdate = 0;
+	private String _misClassString = "";
+	
+	private String _MSEtestSet = "";
+	private String _testSetClassificationACcuracy = "";
+	
+	private Matrix Test_Features;
+	private Matrix Test_Labels;
+	
+	private String _classificationAccuracyString = "";
 
 	public NeuralLayer _layers[];
 	public double _outputs[][];
@@ -45,8 +59,7 @@ public class NeuralNet extends SupervisedLearner {
 
 		double[][] instances = features.getTwoDemensionalArray();
 		double[][] labelsArray = labels.getTwoDemensionalArray();
-		double[][] instanceOutputs = new double[labelsArray.length][classes
-				.size()];
+		double[][] instanceOutputs = new double[labelsArray.length][classes.size()];
 
 		for (int i = 0; i < labelsArray.length; i++) {
 			for (int j = 0; j < classes.size(); j++) {
@@ -87,7 +100,7 @@ public class NeuralNet extends SupervisedLearner {
 		for (int i = 0; i < _layers[0]._nodes.length; i++)
 			_layers[0]._nodes[i]._output = _layers[0]._inputFromPrev[i];
 
-		_layers[1]._inputFromPrev = _layers[0]._inputFromPrev;
+		_layers[1]._inputFromPrev = _layers[0].getArrayOfOutputs();
 		for (int i = 1; i < _numLayers; i++) {
 			_layers[i].calculateNodeOutputs();
 
@@ -155,7 +168,7 @@ public class NeuralNet extends SupervisedLearner {
 		}
 	}
 
-	private void getTotalError() {
+	private void setTotalError() {
 
 		int i, j;
 
@@ -163,18 +176,15 @@ public class NeuralNet extends SupervisedLearner {
 
 		for (i = 0; i < _numTrainingInstances; i++) {
 			for (j = 0; j < _layers[_numLayers - 1]._nodes.length; j++) {
-				_totalError = _totalError + 0.5
-						* (Math.pow(_targetOutput[i][j] - _outputs[i][j], 2));
+				_totalError = _totalError +  (Math.pow(_targetOutput[i][j] - _outputs[i][j], 2));
 			}
 		}
 	}
 
 	public void trainNeuralNet() {
-
-		long k = 0;
-
+		int k = 0;
 		do {
-			for (_curTrainingInstance = 0; _curTrainingInstance < _numTrainingInstances; _curTrainingInstance++) {
+			for (_curTrainingInstance = 0; _curTrainingInstance < _numTrainingInstances * (1-VALIDATION_SET_PERCENTAGE); _curTrainingInstance++) {
 				for (int i = 0; i < _layers[0]._nodes.length; i++) {
 					_layers[0]._inputFromPrev[i] = _trainingInput[_curTrainingInstance][i];
 				}
@@ -188,11 +198,42 @@ public class NeuralNet extends SupervisedLearner {
 				updateWeights();
 
 			}
-
-			k++;
-			getTotalError();
-		} while (k < EPOCHS_LIMIT);
-
+			
+			_misClassified = 0;
+			for (; _curTrainingInstance < _numTrainingInstances; _curTrainingInstance++) {
+				double infered = inferOutput(_trainingInput[_curTrainingInstance]);
+				double[] outputs = _targetOutput[_curTrainingInstance];
+				double actual = 0;
+				for(int i = 0; i < outputs.length; i++){
+					if(i==1) actual = i;
+				}
+				if(infered != actual){
+					_misClassified++;
+				}
+			}
+			if(_misClassified < _lowestMisClass) {
+				_lowestMisClass = _misClassified;
+				_epochsWithoutUpdate = 0;
+			}else{
+				_epochsWithoutUpdate++;
+			}
+//			_misClassString = Math.pow(_misClassified, 2)/(_numTrainingInstances * VALIDATION_SET_PERCENTAGE) * .01+ "\n";
+			setTotalError();
+//			_totalErrorString = _totalError *.001+ "\n";
+//			_classificationAccuracyString = _totalError*.0005 + "\n";
+//			try{
+//				double testSetAcc = this.measureAccuracy(Test_Features, Test_Labels, null);
+//				_MSEtestSet = 1-testSetAcc + "\n";
+//				_testSetClassificationACcuracy = testSetAcc + "\n";
+//			}catch(Exception e){}
+//			k++;
+		} while (_epochsWithoutUpdate < EPOCHS_WITHOUT_UPDATE_LIMIT);
+//		System.out.println(_misClassString + "-------------------------end MSE Validation Set---------------------");
+//		System.out.println(_totalErrorString + "--------------------------end MSE Training Set--------------------------");
+//		System.out.println(_MSEtestSet + "--------------------------end MSE Test Set--------------------------");
+//		System.out.println(_classificationAccuracyString + "--------------------end Training Set Classification Accuracy-------------");
+//		System.out.println(_testSetClassificationACcuracy + "--------------------end Test Set Classification Accuracy-------------");
+//		System.out.println(k);
 	}
 
 	public int inferOutput(double[] input) {
@@ -215,4 +256,9 @@ public class NeuralNet extends SupervisedLearner {
 
 		return toReturn;
 	}
+
+//	public void setTestSet(Matrix testFeatures, Matrix testLabels) {
+//		Test_Features = testFeatures;
+//		Test_Labels = testLabels;
+//	}
 }
