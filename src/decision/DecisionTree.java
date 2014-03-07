@@ -25,8 +25,7 @@ public class DecisionTree extends SupervisedLearner {
 				instance[j] = features.get(i, j);
 //				System.out.print(features.get(i, j) + " ");
 			}
-			_rootNode.addInstance(instance);
-			_rootNode.addOutput(labels.get(i, 0));
+			_rootNode.addInstance(instance, labels.get(i, 0));
 			outputClasses.add(labels.get(i, 0));
 			
 //			System.out.println(": " + labels.get(i, 0));
@@ -37,12 +36,12 @@ public class DecisionTree extends SupervisedLearner {
 		double infoOfRoot = _rootNode.calculateInformation();
 		System.out.println(infoOfRoot);
 		
-		_rootNode.expandTree();
+		_rootNode.expandTree(_rootNode.getMajority());
 	}
 
 	@Override
 	public void predict(double[] features, double[] labels) throws Exception {
-		labels[0] = 0d;
+		labels[0] = _rootNode.inferOutput(features);
 	}
 	
 	public DecisionTree(){
