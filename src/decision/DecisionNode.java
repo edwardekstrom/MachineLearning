@@ -3,6 +3,7 @@ package decision;
 import java.util.*;
 
 public class DecisionNode {
+	public DecisionTree _decidionTree;
 	
 	private List<Integer> _remainingAttributes;
 	private List<Double[]> _instanceInputs;
@@ -12,7 +13,10 @@ public class DecisionNode {
 	private Map<Double, Integer> _majorityTraker;
 	private double _information;
 	private boolean _isLeaf;
+	
 	private boolean _isPure;
+	
+	private DecisionNode _parentNode;
 	
 	private Integer _expandedOnAttribute;
 	
@@ -43,6 +47,9 @@ public class DecisionNode {
 		_possibleExpansions = new HashMap<Integer, Map<Double, DecisionNode>>();
 		
 		_isPure = true;
+		
+		_parentNode = null;
+		
 		_expandedOnAttribute = null;
 		_nodeOutput = null;
 		
@@ -60,6 +67,7 @@ public class DecisionNode {
 //			System.out.print("\n\n\n");
 			
 			_isLeaf = true;
+			_decidionTree.addLeaf(this);
 			_nodeOutput = parentOutput;
 			return;
 		}else if(_isPure){
@@ -72,6 +80,7 @@ public class DecisionNode {
 //			System.out.print("\n\n\n");
 			
 			_isLeaf = true;
+			_decidionTree.addLeaf(this);
 			_nodeOutput = getMajority();
 			return;
 		}else if(_remainingAttributes.size() == 0){
@@ -84,6 +93,7 @@ public class DecisionNode {
 //			System.out.print("\n\n\n");
 			
 			_isLeaf = true;
+			_decidionTree.addLeaf(this);
 			_nodeOutput = getMajority();
 			return;
 		}else{
@@ -170,6 +180,8 @@ public class DecisionNode {
 		
 		for(Double key: attributeToInstances.keySet()){
 			DecisionNode possibleChild = new DecisionNode();
+			possibleChild._parentNode = this;
+			possibleChild._decidionTree = this._decidionTree;
 			possibleChild.setTitle(key);
 			possibleChild.setAttributeTitle(attr);
 			
@@ -294,6 +306,18 @@ public class DecisionNode {
 		}
 		return toReturn;
 	}
+	
+	public double inferOutput(Double[] features) {
+		double toReturn = 0d;
+		if(_isLeaf){
+			toReturn = _nodeOutput;
+		}else if(_actualChildren.containsKey(features[_expandedOnAttribute])){
+			toReturn = _actualChildren.get(features[_expandedOnAttribute]).inferOutput(features);
+		}else{
+			toReturn = _nodeOutput;
+		}
+		return toReturn;
+	}
 
 	public String makeDot() {
 		String toReturn = "";
@@ -340,6 +364,84 @@ public class DecisionNode {
 	public void setAttributeTitle(Integer _attributeTitle) {
 		this._attributeTitle = _attributeTitle;
 	}
+
+	public void pruneUp(List<Double[]> validationInstanceInputs,
+			List<Double> validationInstanceOutputs) {
+		double curBest = getValidationAccuracy(validationInstanceInputs, validationInstanceOutputs);
+		while(_parentNode != null){
+			if(_parentNode._isLeaf) break;
+			_parentNode._isLeaf = true;
+			double accur = getValidationAccuracy(validationInstanceInputs, validationInstanceOutputs);
+			if(accur < curBest){
+				_parentNode._isLeaf = false;
+				break;
+			}else{
+				_parentNode._expandedOnAttribute = null;
+				curBest = accur;
+			}
+		}
+		
+	}
 	
+	public double getValidationAccuracy(List<Double[]> validationInstanceInputs,
+			List<Double> validationInstanceOutputs){
+		double total = validationInstanceInputs.size();
+		double correct = 0;
+		for(int i = 0 ; i < validationInstanceInputs.size() ; i++){
+			Double[] input = validationInstanceInputs.get(i);
+			Double output = validationInstanceOutputs.get(i);
+			if (_decidionTree._rootNode.inferOutput(input) == output){
+				correct++;
+			}
+		}
+		return correct/total;
+	}
+
+	public void removePrunedBranches() {
+		if(_isLeaf){
+			_actualChildren = new HashMap<Double, DecisionNode>();
+		}else{
+			for (double key: _actualChildren.keySet()){
+				_actualChildren.get(key).removePrunedBranches();
+			}
+		}
+	}
+	
+	public int countNodes(){
+		if(_isLeaf){
+			return 1;
+		}else{
+			int childrenTotal = 0;
+			for (double key: _actualChildren.keySet()){
+				childrenTotal += _actualChildren.get(key).countNodes();
+			}
+			return 1 + childrenTotal;
+		}
+	}
+	
+	public int maxDepth (DecisionNode r) {
+	    int depth = 0;
+	    Stack<DecisionNode> wq = new Stack<DecisionNode>();
+	    Stack<DecisionNode> path = new Stack<DecisionNode>();
+
+	    wq.push (r);
+	    while (!wq.empty()) {
+	        r = wq.peek();
+	        if (!path.empty() && r == path.peek()) {
+	            if (path.size() > depth)
+	                depth = path.size();
+	            path.pop();
+	            wq.pop();
+	        } else {
+	            path.push(r);
+	            for(double key: _actualChildren.keySet()){
+	            	DecisionNode child = _actualChildren.get(key);
+	            	wq.push(child);
+	            }
+	        }
+	    }
+
+	    return depth;
+	}
 	
 }

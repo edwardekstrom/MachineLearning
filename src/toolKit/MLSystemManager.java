@@ -35,7 +35,7 @@ public class MLSystemManager {
 	public void run(String[] args) throws Exception {
 //		./MLSystemManager -L [LearningAlgorithm] -A [ARFF_File] -E random [PercentageForTraining]
 //		args = new String[]{"-L", "baseline", "-A", "data/vowel.arff", "-E", "cross", "10", "-N"};
-//		args = new String[]{"-L", "decisiontree", "-A", "data/voting.arff", "-E", "cross", "10", "-N"};
+//		args = new String[]{"-L", "decisiontree", "-A", "data/cars.arff", "-E", "cross", "10", "-N"};
 //		args = new String[]{"-L", "neuralnet", "-A", "data/vowel.arff", "-E", "training"};
 		args = new String[]{"-L", "decisiontree", "-A", "data/voting.arff", "-E", "training"};
 //		args = new String[]{"-L", "neuralnet", "-A", "data/iris.arff", "-E", "random", ".75", "-N"};
