@@ -1,0 +1,18 @@
+digraph voting {
+decisionDecisionNode1f5b0afd[label="Attribute: null=Infinity
+Count: 383
+0.0:240   1.0:143   
+Expand On: 3"];decisionDecisionNode1f5b0afd -> decisionDecisionNode28d08633;
+decisionDecisionNode28d08633[label="Attribute: 3=0.0
+Count: 222
+0.0:220   1.0:2   
+Expand On: null"];decisionDecisionNode1f5b0afd -> decisionDecisionNode121a9334;
+decisionDecisionNode121a9334[label="Attribute: 3=1.7976931348623157E308
+Count: 10
+0.0:7   1.0:3   
+Expand On: null"];decisionDecisionNode1f5b0afd -> decisionDecisionNode6037fb1e;
+decisionDecisionNode6037fb1e[label="Attribute: 3=1.0
+Count: 151
+0.0:13   1.0:138   
+Expand On: null"];
+}

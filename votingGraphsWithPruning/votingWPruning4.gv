@@ -1,0 +1,106 @@
+digraph voting {
+decisionDecisionNode2fdb7df8[label="Attribute: null=Infinity
+Count: 349
+0.0:211   1.0:138   
+Expand On: 3"];decisionDecisionNode2fdb7df8 -> decisionDecisionNode732b3d53;
+decisionDecisionNode732b3d53[label="Attribute: 3=0.0
+Count: 195
+0.0:193   1.0:2   
+Expand On: null"];decisionDecisionNode2fdb7df8 -> decisionDecisionNode1bc74f37;
+decisionDecisionNode1bc74f37[label="Attribute: 3=1.7976931348623157E308
+Count: 8
+0.0:5   1.0:3   
+Expand On: 11"];decisionDecisionNode1bc74f37 -> decisionDecisionNode3a21b220;
+decisionDecisionNode3a21b220[label="Attribute: 11=0.0
+Count: 5
+0.0:5   
+Expand On: null"];decisionDecisionNode1bc74f37 -> decisionDecisionNode7a3570b0;
+decisionDecisionNode7a3570b0[label="Attribute: 11=1.7976931348623157E308
+Count: 2
+1.0:2   
+Expand On: null"];decisionDecisionNode1bc74f37 -> decisionDecisionNode4a79717e;
+decisionDecisionNode4a79717e[label="Attribute: 11=1.0
+Count: 1
+1.0:1   
+Expand On: null"];decisionDecisionNode2fdb7df8 -> decisionDecisionNode6b0a2d64;
+decisionDecisionNode6b0a2d64[label="Attribute: 3=1.0
+Count: 146
+0.0:13   1.0:133   
+Expand On: 10"];decisionDecisionNode6b0a2d64 -> decisionDecisionNode692a3722;
+decisionDecisionNode692a3722[label="Attribute: 10=0.0
+Count: 113
+0.0:3   1.0:110   
+Expand On: null"];decisionDecisionNode6b0a2d64 -> decisionDecisionNode5289cf1e;
+decisionDecisionNode5289cf1e[label="Attribute: 10=1.7976931348623157E308
+Count: 6
+1.0:6   
+Expand On: null"];decisionDecisionNode6b0a2d64 -> decisionDecisionNode557ce4e7;
+decisionDecisionNode557ce4e7[label="Attribute: 10=1.0
+Count: 27
+0.0:10   1.0:17   
+Expand On: 2"];decisionDecisionNode557ce4e7 -> decisionDecisionNode7a982589;
+decisionDecisionNode7a982589[label="Attribute: 2=0.0
+Count: 19
+0.0:4   1.0:15   
+Expand On: 4"];decisionDecisionNode7a982589 -> decisionDecisionNode1ac88440;
+decisionDecisionNode1ac88440[label="Attribute: 4=0.0
+Count: 2
+0.0:2   
+Expand On: null"];decisionDecisionNode7a982589 -> decisionDecisionNode6262937c;
+decisionDecisionNode6262937c[label="Attribute: 4=1.0
+Count: 17
+0.0:2   1.0:15   
+Expand On: 15"];decisionDecisionNode6262937c -> decisionDecisionNode35c0e45a;
+decisionDecisionNode35c0e45a[label="Attribute: 15=0.0
+Count: 6
+0.0:2   1.0:4   
+Expand On: 0"];decisionDecisionNode35c0e45a -> decisionDecisionNodeacfec48;
+decisionDecisionNodeacfec48[label="Attribute: 0=0.0
+Count: 3
+0.0:2   1.0:1   
+Expand On: 1"];decisionDecisionNodeacfec48 -> decisionDecisionNode58a17083;
+decisionDecisionNode58a17083[label="Attribute: 1=0.0
+Count: 1
+0.0:1   
+Expand On: null"];decisionDecisionNodeacfec48 -> decisionDecisionNode4ee1d5ea;
+decisionDecisionNode4ee1d5ea[label="Attribute: 1=1.0
+Count: 2
+0.0:1   1.0:1   
+Expand On: 12"];decisionDecisionNode4ee1d5ea -> decisionDecisionNode4ca31e1b;
+decisionDecisionNode4ca31e1b[label="Attribute: 12=0.0
+Count: 1
+0.0:1   
+Expand On: null"];decisionDecisionNode4ee1d5ea -> decisionDecisionNode690da5eb;
+decisionDecisionNode690da5eb[label="Attribute: 12=1.0
+Count: 1
+1.0:1   
+Expand On: null"];decisionDecisionNode35c0e45a -> decisionDecisionNode7f081d2e;
+decisionDecisionNode7f081d2e[label="Attribute: 0=1.0
+Count: 3
+1.0:3   
+Expand On: null"];decisionDecisionNode6262937c -> decisionDecisionNode6db3f829;
+decisionDecisionNode6db3f829[label="Attribute: 15=1.7976931348623157E308
+Count: 2
+1.0:2   
+Expand On: null"];decisionDecisionNode6262937c -> decisionDecisionNode42698403;
+decisionDecisionNode42698403[label="Attribute: 15=1.0
+Count: 9
+1.0:9   
+Expand On: null"];decisionDecisionNode557ce4e7 -> decisionDecisionNode1d5a0305;
+decisionDecisionNode1d5a0305[label="Attribute: 2=1.7976931348623157E308
+Count: 1
+0.0:1   
+Expand On: null"];decisionDecisionNode557ce4e7 -> decisionDecisionNode7c4c51;
+decisionDecisionNode7c4c51[label="Attribute: 2=1.0
+Count: 7
+0.0:5   1.0:2   
+Expand On: 6"];decisionDecisionNode7c4c51 -> decisionDecisionNode60765a16;
+decisionDecisionNode60765a16[label="Attribute: 6=0.0
+Count: 5
+0.0:5   
+Expand On: null"];decisionDecisionNode7c4c51 -> decisionDecisionNode7a148bd3;
+decisionDecisionNode7a148bd3[label="Attribute: 6=1.0
+Count: 2
+1.0:2   
+Expand On: null"];
+}

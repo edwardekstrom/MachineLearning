@@ -1,0 +1,102 @@
+digraph voting {
+decisionDecisionNode69198891[label="Attribute: null=Infinity
+Count: 345
+0.0:215   1.0:130   
+Expand On: 3"];decisionDecisionNode69198891 -> decisionDecisionNodeb551d7f;
+decisionDecisionNodeb551d7f[label="Attribute: 3=0.0
+Count: 199
+0.0:198   1.0:1   
+Expand On: null"];decisionDecisionNode69198891 -> decisionDecisionNode10382a9;
+decisionDecisionNode10382a9[label="Attribute: 3=1.7976931348623157E308
+Count: 9
+0.0:6   1.0:3   
+Expand On: 8"];decisionDecisionNode10382a9 -> decisionDecisionNoded7725c4;
+decisionDecisionNoded7725c4[label="Attribute: 8=0.0
+Count: 4
+0.0:4   
+Expand On: null"];decisionDecisionNode10382a9 -> decisionDecisionNode9506dc4;
+decisionDecisionNode9506dc4[label="Attribute: 8=1.7976931348623157E308
+Count: 2
+1.0:2   
+Expand On: null"];decisionDecisionNode10382a9 -> decisionDecisionNode7f5663a2;
+decisionDecisionNode7f5663a2[label="Attribute: 8=1.0
+Count: 3
+0.0:2   1.0:1   
+Expand On: 6"];decisionDecisionNode7f5663a2 -> decisionDecisionNodea761fe;
+decisionDecisionNodea761fe[label="Attribute: 6=0.0
+Count: 1
+1.0:1   
+Expand On: null"];decisionDecisionNode7f5663a2 -> decisionDecisionNode5430d082;
+decisionDecisionNode5430d082[label="Attribute: 6=1.7976931348623157E308
+Count: 1
+0.0:1   
+Expand On: null"];decisionDecisionNode7f5663a2 -> decisionDecisionNode50c931fc;
+decisionDecisionNode50c931fc[label="Attribute: 6=1.0
+Count: 1
+0.0:1   
+Expand On: null"];decisionDecisionNode69198891 -> decisionDecisionNode48f0c0d3;
+decisionDecisionNode48f0c0d3[label="Attribute: 3=1.0
+Count: 137
+0.0:11   1.0:126   
+Expand On: 10"];decisionDecisionNode48f0c0d3 -> decisionDecisionNode3603820e;
+decisionDecisionNode3603820e[label="Attribute: 10=0.0
+Count: 106
+0.0:3   1.0:103   
+Expand On: 14"];decisionDecisionNode3603820e -> decisionDecisionNode204f80d6;
+decisionDecisionNode204f80d6[label="Attribute: 14=0.0
+Count: 91
+0.0:1   1.0:90   
+Expand On: null"];decisionDecisionNode3603820e -> decisionDecisionNode4393722c;
+decisionDecisionNode4393722c[label="Attribute: 14=1.7976931348623157E308
+Count: 6
+1.0:6   
+Expand On: null"];decisionDecisionNode3603820e -> decisionDecisionNode52cc95d;
+decisionDecisionNode52cc95d[label="Attribute: 14=1.0
+Count: 9
+0.0:2   1.0:7   
+Expand On: 9"];decisionDecisionNode52cc95d -> decisionDecisionNode3f57fb52;
+decisionDecisionNode3f57fb52[label="Attribute: 9=0.0
+Count: 3
+0.0:2   1.0:1   
+Expand On: 6"];decisionDecisionNode3f57fb52 -> decisionDecisionNode2934e4fb;
+decisionDecisionNode2934e4fb[label="Attribute: 6=0.0
+Count: 2
+0.0:2   
+Expand On: null"];decisionDecisionNode3f57fb52 -> decisionDecisionNode4fa52fdf;
+decisionDecisionNode4fa52fdf[label="Attribute: 6=1.0
+Count: 1
+1.0:1   
+Expand On: null"];decisionDecisionNode52cc95d -> decisionDecisionNode65ea0252;
+decisionDecisionNode65ea0252[label="Attribute: 9=1.0
+Count: 6
+1.0:6   
+Expand On: null"];decisionDecisionNode48f0c0d3 -> decisionDecisionNode663e89c3;
+decisionDecisionNode663e89c3[label="Attribute: 10=1.7976931348623157E308
+Count: 5
+1.0:5   
+Expand On: null"];decisionDecisionNode48f0c0d3 -> decisionDecisionNode13c695a6;
+decisionDecisionNode13c695a6[label="Attribute: 10=1.0
+Count: 26
+0.0:8   1.0:18   
+Expand On: 1"];decisionDecisionNode13c695a6 -> decisionDecisionNode528acf6e;
+decisionDecisionNode528acf6e[label="Attribute: 1=0.0
+Count: 6
+1.0:6   
+Expand On: null"];decisionDecisionNode13c695a6 -> decisionDecisionNode17386918;
+decisionDecisionNode17386918[label="Attribute: 1=1.7976931348623157E308
+Count: 1
+1.0:1   
+Expand On: null"];decisionDecisionNode13c695a6 -> decisionDecisionNode787bb290;
+decisionDecisionNode787bb290[label="Attribute: 1=1.0
+Count: 19
+0.0:8   1.0:11   
+Expand On: 2"];decisionDecisionNode787bb290 -> decisionDecisionNode10849bc;
+decisionDecisionNode10849bc[label="Attribute: 2=0.0
+Count: 14
+0.0:4   1.0:10   
+Expand On: null"];decisionDecisionNode787bb290 -> decisionDecisionNode4720d62b;
+decisionDecisionNode4720d62b[label="Attribute: 2=1.0
+Count: 5
+0.0:4   1.0:1   
+Expand On: null"];
+}

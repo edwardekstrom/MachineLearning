@@ -1,0 +1,42 @@
+digraph voting {
+decisionDecisionNode6d4c1103[label="Attribute: null=Infinity
+Count: 353
+0.0:221   1.0:132   
+Expand On: 3"];decisionDecisionNode6d4c1103 -> decisionDecisionNode1cf11404;
+decisionDecisionNode1cf11404[label="Attribute: 3=0.0
+Count: 202
+0.0:201   1.0:1   
+Expand On: null"];decisionDecisionNode6d4c1103 -> decisionDecisionNode17592174;
+decisionDecisionNode17592174[label="Attribute: 3=1.7976931348623157E308
+Count: 10
+0.0:7   1.0:3   
+Expand On: 8"];decisionDecisionNode17592174 -> decisionDecisionNode5ca352a5;
+decisionDecisionNode5ca352a5[label="Attribute: 8=0.0
+Count: 4
+0.0:4   
+Expand On: null"];decisionDecisionNode17592174 -> decisionDecisionNode6686fe26;
+decisionDecisionNode6686fe26[label="Attribute: 8=1.7976931348623157E308
+Count: 2
+1.0:2   
+Expand On: null"];decisionDecisionNode17592174 -> decisionDecisionNode2897a560;
+decisionDecisionNode2897a560[label="Attribute: 8=1.0
+Count: 4
+0.0:3   1.0:1   
+Expand On: 6"];decisionDecisionNode2897a560 -> decisionDecisionNode7bea5671;
+decisionDecisionNode7bea5671[label="Attribute: 6=0.0
+Count: 1
+1.0:1   
+Expand On: null"];decisionDecisionNode2897a560 -> decisionDecisionNode55d15445;
+decisionDecisionNode55d15445[label="Attribute: 6=1.7976931348623157E308
+Count: 1
+0.0:1   
+Expand On: null"];decisionDecisionNode2897a560 -> decisionDecisionNode21f3aa07;
+decisionDecisionNode21f3aa07[label="Attribute: 6=1.0
+Count: 2
+0.0:2   
+Expand On: null"];decisionDecisionNode6d4c1103 -> decisionDecisionNode41fc2fb;
+decisionDecisionNode41fc2fb[label="Attribute: 3=1.0
+Count: 141
+0.0:13   1.0:128   
+Expand On: null"];
+}
