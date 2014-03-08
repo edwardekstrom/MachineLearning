@@ -1,5 +1,7 @@
 package decision;
 
+import java.awt.Robot;
+import java.io.PrintWriter;
 import java.util.*;
 
 import toolKit.Matrix;
@@ -13,6 +15,8 @@ public class DecisionTree extends SupervisedLearner {
 	
 	@Override
 	public void train(Matrix features, Matrix labels) throws Exception {
+		_rootNode = new DecisionNode();
+		_rootNode.setTitle(Double.POSITIVE_INFINITY);
 		Set<Double> outputClasses = new TreeSet<Double>();
 		
 		for(int i = 0; i < features.cols(); i++){
@@ -34,9 +38,15 @@ public class DecisionTree extends SupervisedLearner {
 		_rootNode.setOutputClasses(outputClasses);
 		
 		double infoOfRoot = _rootNode.calculateInformation();
-		System.out.println(infoOfRoot);
+//		System.out.println(infoOfRoot);
 		
 		_rootNode.expandTree(_rootNode.getMajority());
+		
+		PrintWriter writer = new PrintWriter("voting.gv");
+		writer.print("digraph voting {\n");
+		writer.print(_rootNode.makeDot());
+		writer.print("\n}");
+		writer.close();
 	}
 
 	@Override

@@ -35,11 +35,11 @@ public class MLSystemManager {
 	public void run(String[] args) throws Exception {
 //		./MLSystemManager -L [LearningAlgorithm] -A [ARFF_File] -E random [PercentageForTraining]
 //		args = new String[]{"-L", "baseline", "-A", "data/vowel.arff", "-E", "cross", "10", "-N"};
-//		args = new String[]{"-L", "neuralnet", "-A", "data/iris.arff", "-E", "cross", "10", "-N"};
+//		args = new String[]{"-L", "decisiontree", "-A", "data/voting.arff", "-E", "cross", "10", "-N"};
 //		args = new String[]{"-L", "neuralnet", "-A", "data/vowel.arff", "-E", "training"};
-		args = new String[]{"-L", "decisiontree", "-A", "data/lenses.arff", "-E", "training"};
+		args = new String[]{"-L", "decisiontree", "-A", "data/voting.arff", "-E", "training"};
 //		args = new String[]{"-L", "neuralnet", "-A", "data/iris.arff", "-E", "random", ".75", "-N"};
-//		args = new String[]{"-L", "decisiontree", "-A", "data/lenses.arff", "-E", "random", ".75", "-N"};
+//		args = new String[]{"-L", "decisiontree", "-A", "data/cars.arff", "-E", "random", ".75", "-N"};
 //		args = new String[]{"-L", "perceptron", "-A", "data/iris.arff", "-E", "cross", "10", "-N"};
 //		args = new String[]{"-L", "perceptron", "-A", "data/iris.arff", "-E", "training", "-N"};
 //		args = new String[]{"-L", "perceptron", "-A", "data/linearlySeparable.arff", "-E", "training", "-N"};
@@ -181,10 +181,12 @@ public class MLSystemManager {
 					trainLabels.add(data, end, data.cols() - 1, data.rows() - end);
 					double startTime = System.currentTimeMillis();
 					learner.train(trainFeatures, trainLabels);
+					double trainAccuracy = learner.measureAccuracy(trainFeatures, trainLabels, null);
 					elapsedTime += System.currentTimeMillis() - startTime;
 					double accuracy = learner.measureAccuracy(testFeatures, testLabels, null);
 					sumAccuracy += accuracy;
-					System.out.println("Rep=" + j + ", Fold=" + i + ", Accuracy=" + accuracy);
+//					System.out.println("Rep=" + j + ", Fold=" + i + ", Training Accuracy=" + trainAccuracy + ", Accuracy=" + accuracy);
+					System.out.println(accuracy);
 				}
 			}
 			elapsedTime /= (reps * folds);

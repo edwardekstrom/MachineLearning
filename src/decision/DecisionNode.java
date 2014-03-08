@@ -24,6 +24,8 @@ public class DecisionNode {
 	
 	private Double _title;
 	
+	private Integer _attributeTitle;
+	
 	
 	
 	public DecisionNode() {
@@ -43,41 +45,43 @@ public class DecisionNode {
 		_isPure = true;
 		_expandedOnAttribute = null;
 		_nodeOutput = null;
+		
+		setAttributeTitle(null);
 	}
 	
 	public void expandTree(Double parentOutput){
 		if(_countInstances == 0){
-			for(int i = 0 ; i < _countInstances ; i++){
-				for(int j = 0 ; j < _instanceInputs.get(i).length ; j++){
-					System.out.print(_instanceInputs.get(i)[j] + " ");
-				}
-				System.out.println(": " + _instanceOutputs.get(i));
-			}
-			System.out.print("\n\n\n");
+//			for(int i = 0 ; i < _countInstances ; i++){
+//				for(int j = 0 ; j < _instanceInputs.get(i).length ; j++){
+//					System.out.print(_instanceInputs.get(i)[j] + " ");
+//				}
+//				System.out.println(": " + _instanceOutputs.get(i));
+//			}
+//			System.out.print("\n\n\n");
 			
 			_isLeaf = true;
 			_nodeOutput = parentOutput;
 			return;
 		}else if(_isPure){
-			for(int i = 0 ; i < _countInstances ; i++){
-				for(int j = 0 ; j < _instanceInputs.get(i).length ; j++){
-					System.out.print(_instanceInputs.get(i)[j] + " ");
-				}
-				System.out.println(": " + _instanceOutputs.get(i));
-			}
-			System.out.print("\n\n\n");
+//			for(int i = 0 ; i < _countInstances ; i++){
+//				for(int j = 0 ; j < _instanceInputs.get(i).length ; j++){
+//					System.out.print(_instanceInputs.get(i)[j] + " ");
+//				}
+//				System.out.println(": " + _instanceOutputs.get(i));
+//			}
+//			System.out.print("\n\n\n");
 			
 			_isLeaf = true;
 			_nodeOutput = getMajority();
 			return;
 		}else if(_remainingAttributes.size() == 0){
-			for(int i = 0 ; i < _countInstances ; i++){
-				for(int j = 0 ; j < _instanceInputs.get(i).length ; j++){
-					System.out.print(_instanceInputs.get(i)[j] + " ");
-				}
-				System.out.println(": " + _instanceOutputs.get(i));
-			}
-			System.out.print("\n\n\n");
+//			for(int i = 0 ; i < _countInstances ; i++){
+//				for(int j = 0 ; j < _instanceInputs.get(i).length ; j++){
+//					System.out.print(_instanceInputs.get(i)[j] + " ");
+//				}
+//				System.out.println(": " + _instanceOutputs.get(i));
+//			}
+//			System.out.print("\n\n\n");
 			
 			_isLeaf = true;
 			_nodeOutput = getMajority();
@@ -121,7 +125,9 @@ public class DecisionNode {
 			
 			for(Double keyPos: possible.keySet()){
 				DecisionNode child = possible.get(keyPos);
-				curInfo_A += (child.getCountInstances() / _countInstances) * child.getInfo();
+				double childInstances = child.getCountInstances();
+				double childInfo = child.getInfo();
+				curInfo_A += (childInstances / _countInstances) * childInfo;
 			}
 			
 			if(curInfo_A < lowest){
@@ -165,6 +171,7 @@ public class DecisionNode {
 		for(Double key: attributeToInstances.keySet()){
 			DecisionNode possibleChild = new DecisionNode();
 			possibleChild.setTitle(key);
+			possibleChild.setAttributeTitle(attr);
 			
 			for(int i = 0; i < _remainingAttributes.size(); i++){
 				if(_remainingAttributes.get(i) != attr){
@@ -266,18 +273,72 @@ public class DecisionNode {
 	public Double getTitle() {
 		return _title;
 	}
+	
+	public String getTitleString(){
+		Integer titleString = new Integer(_title.intValue());
+		return titleString.toString();
+	}
 
 	public void setTitle(Double _title) {
 		this._title = _title;
 	}
 
 	public double inferOutput(double[] features) {
+		double toReturn = 0d;
 		if(_isLeaf){
-			return _nodeOutput;
+			toReturn = _nodeOutput;
+		}else if(_actualChildren.containsKey(features[_expandedOnAttribute])){
+			toReturn = _actualChildren.get(features[_expandedOnAttribute]).inferOutput(features);
 		}else{
-			
+			toReturn = _nodeOutput;
 		}
-		return 0;
+		return toReturn;
+	}
+
+	public String makeDot() {
+		String toReturn = "";
+		String ExpandOn = "Expand On: " + _expandedOnAttribute;
+		String Count = "Count: " + _countInstances;
+		String Title = "Attribute: " + getAttributeTitle() + "=" + getTitle();
+		String values = "";
+		for(Double output: _majorityTraker.keySet()){
+			values += output + ":" + _majorityTraker.get(output) + "   ";
+		}
+		toReturn += this.toString().replace(".", "").replace("@", "")
+				+ "[label=\"" 
+				+ Title + "\n"
+				+ Count+ "\n"
+				+ values + "\n"
+				+ ExpandOn
+				+ "\"];";
+		if(_isLeaf){
+		}else{
+
+			for(Double key: _actualChildren.keySet()){
+				toReturn += this.toString().replace(".", "").replace("@", "");
+				toReturn += " -> ";
+				toReturn += _actualChildren.get(key).toString().replace(".", "").replace("@", "");
+				toReturn += ";\n";
+				toReturn += _actualChildren.get(key).makeDot();
+			} 
+		}
+		return toReturn;
+	}
+	
+	public String getExpandedOn(){
+		if(_expandedOnAttribute == null){
+			return "";
+		}else{
+			return _expandedOnAttribute.toString();
+		}
+	}
+
+	public Integer getAttributeTitle() {
+		return _attributeTitle;
+	}
+
+	public void setAttributeTitle(Integer _attributeTitle) {
+		this._attributeTitle = _attributeTitle;
 	}
 	
 	
