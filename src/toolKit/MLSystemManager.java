@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.io.File;
 
+import knn.InstanceBasedLearner;
 import decision.DecisionTree;
 import backprop.NeuralNet;
 import perceptron.Perceptron;
@@ -23,21 +24,24 @@ public class MLSystemManager {
 	{
 		int[] structure = {4, 8, 3};
 //		int[] structure = {10, 20, 10};
+//		int[] structure = {10, 10, 2};
 		
 		if (model.equals("baseline")) return new BaselineLearner();
 		else if (model.equals("perceptron")) return new Perceptron(rand);
 		else if (model.equals("neuralnet")) return new NeuralNet(structure);
-		 else if (model.equals("decisiontree")) return new DecisionTree();
-		// else if (model.equals("knn")) return new InstanceBasedLearner();
+		else if (model.equals("decisiontree")) return new DecisionTree();
+		else if (model.equals("knn")) return new InstanceBasedLearner();
 		else throw new Exception("Unrecognized model: " + model);
 	}
 
 	public void run(String[] args) throws Exception {
 //		./MLSystemManager -L [LearningAlgorithm] -A [ARFF_File] -E random [PercentageForTraining]
+		args = new String[]{"-L", "knn", "-A", "data/magicTraining.arff", "-E", "static", "0" , "-N"};
+//		args = new String[]{"-L", "knn", "-A", "data/magicTraining.arff", "-E", "static", "0"};
 //		args = new String[]{"-L", "baseline", "-A", "data/vowel.arff", "-E", "cross", "10", "-N"};
 //		args = new String[]{"-L", "decisiontree", "-A", "data/cars.arff", "-E", "cross", "10", "-N"};
 //		args = new String[]{"-L", "neuralnet", "-A", "data/vowel.arff", "-E", "training"};
-		args = new String[]{"-L", "decisiontree", "-A", "data/voting.arff", "-E", "training"};
+//		args = new String[]{"-L", "decisiontree", "-A", "data/voting.arff", "-E", "training"};
 //		args = new String[]{"-L", "neuralnet", "-A", "data/iris.arff", "-E", "random", ".75", "-N"};
 //		args = new String[]{"-L", "decisiontree", "-A", "data/cars.arff", "-E", "random", ".75", "-N"};
 //		args = new String[]{"-L", "perceptron", "-A", "data/iris.arff", "-E", "cross", "10", "-N"};
@@ -99,27 +103,33 @@ public class MLSystemManager {
 		}
 		else if (evalMethod.equals("static"))
 		{
+			System.out.println("Calculating accuracy on a random hold-out set...");
+			double trainPercent = 1;
+			if (trainPercent < 0 || trainPercent > 1)
+				throw new Exception("Percentage for random evaluation must be between 0 and 1");
+			System.out.println("Percentage used for training: " + trainPercent);
+			System.out.println("Percentage used for testing: " + (1 - trainPercent));
+//			data.shuffle(rand);
+			int trainSize = (int)(trainPercent * data.rows());
+			Matrix trainFeatures = new Matrix(data, 0, 0, trainSize, data.cols() - 1);
+			Matrix trainLabels = new Matrix(data, 0, data.cols() - 1, trainSize, 1);
 			Matrix testData = new Matrix();
-			testData.loadArff(evalParameter);
-			if (normalize)
-				testData.normalize(); // BUG! This may normalize differently from the training data. It should use the same ranges for normalization!
-
-			System.out.println("Calculating accuracy on separate test set...");
-			System.out.println("Test set name: " + evalParameter);
-			System.out.println("Number of test instances: " + testData.rows());
-			Matrix features = new Matrix(data, 0, 0, data.rows(), data.cols() - 1);
-			Matrix labels = new Matrix(data, 0, data.cols() - 1, data.rows(), 1);
-			double startTime = System.currentTimeMillis();
-			learner.train(features, labels);
-			double elapsedTime = System.currentTimeMillis() - startTime;
-			System.out.println("Time to train (in seconds): " + elapsedTime / 1000.0);
-			double trainAccuracy = learner.measureAccuracy(features, labels, null);
-			System.out.println("Training set accuracy: " + trainAccuracy);
+			testData.loadArff("data/magicTest.arff");
+			if (normalize) testData.normalize();
 			Matrix testFeatures = new Matrix(testData, 0, 0, testData.rows(), testData.cols() - 1);
 			Matrix testLabels = new Matrix(testData, 0, testData.cols() - 1, testData.rows(), 1);
+			double startTime = System.currentTimeMillis();
+//			((NeuralNet)learner).setTestSet(testFeatures, testLabels);
+			learner.train(trainFeatures, trainLabels);
+			double elapsedTime = System.currentTimeMillis() - startTime;
+			System.out.println("Time to train (in seconds): " + elapsedTime / 1000.0);
+			double trainAccuracy = 1.1;
+			System.out.println("Training set accuracy: " + trainAccuracy);
+//			System.out.println(trainAccuracy);
 			Matrix confusion = new Matrix();
-			double testAccuracy = learner.measureAccuracy(testFeatures, testLabels, confusion);
+			double testAccuracy = learner.measureAccuracy(testFeatures, testLabels, null);
 			System.out.println("Test set accuracy: " + testAccuracy);
+//			System.out.println(testAccuracy);
 			if(printConfusionMatrix) {
 				System.out.println("\nConfusion matrix: (Row=target value, Col=predicted value)");
 				confusion.print();
