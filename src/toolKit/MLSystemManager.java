@@ -36,13 +36,13 @@ public class MLSystemManager {
 
 	public void run(String[] args) throws Exception {
 //		./MLSystemManager -L [LearningAlgorithm] -A [ARFF_File] -E random [PercentageForTraining]
-		args = new String[]{"-L", "knn", "-A", "data/magicTraining.arff", "-E", "static", "0" , "-N"};
+		args = new String[]{"-L", "knn", "-A", "data/housingTraining.arff", "-E", "static", "0" , "-N"};
 //		args = new String[]{"-L", "knn", "-A", "data/magicTraining.arff", "-E", "static", "0"};
 //		args = new String[]{"-L", "baseline", "-A", "data/vowel.arff", "-E", "cross", "10", "-N"};
 //		args = new String[]{"-L", "decisiontree", "-A", "data/cars.arff", "-E", "cross", "10", "-N"};
 //		args = new String[]{"-L", "neuralnet", "-A", "data/vowel.arff", "-E", "training"};
 //		args = new String[]{"-L", "decisiontree", "-A", "data/voting.arff", "-E", "training"};
-//		args = new String[]{"-L", "neuralnet", "-A", "data/iris.arff", "-E", "random", ".75", "-N"};
+//		args = new String[]{"-L", "knn", "-A", "data/credit.arff", "-E", "random", ".75", "-N"};
 //		args = new String[]{"-L", "decisiontree", "-A", "data/cars.arff", "-E", "random", ".75", "-N"};
 //		args = new String[]{"-L", "perceptron", "-A", "data/iris.arff", "-E", "cross", "10", "-N"};
 //		args = new String[]{"-L", "perceptron", "-A", "data/iris.arff", "-E", "training", "-N"};
@@ -50,7 +50,7 @@ public class MLSystemManager {
 //		args = new String[]{"-L", "perceptron", "-A", "data/notLinearlySeparable.arff", "-E", "training", "-N"};
 
 		//good 2, 5, 13
-		Random rand = new Random(); // Use a seed for deterministic results (makes debugging easier)
+		Random rand = new Random(3); // Use a seed for deterministic results (makes debugging easier)
 		//Random rand = new Random(); // No seed for non-deterministic results
 
 		//Parse the command line arguments
@@ -114,7 +114,7 @@ public class MLSystemManager {
 			Matrix trainFeatures = new Matrix(data, 0, 0, trainSize, data.cols() - 1);
 			Matrix trainLabels = new Matrix(data, 0, data.cols() - 1, trainSize, 1);
 			Matrix testData = new Matrix();
-			testData.loadArff("data/magicTest.arff");
+			testData.loadArff("data/housingTest.arff");
 			if (normalize) testData.normalize();
 			Matrix testFeatures = new Matrix(testData, 0, 0, testData.rows(), testData.cols() - 1);
 			Matrix testLabels = new Matrix(testData, 0, testData.cols() - 1, testData.rows(), 1);
