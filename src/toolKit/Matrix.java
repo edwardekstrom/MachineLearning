@@ -23,6 +23,8 @@ public class Matrix {
 	ArrayList< String > m_attr_name;
 	ArrayList< TreeMap<String, Integer> > m_str_to_enum;
 	ArrayList< TreeMap<Integer, String> > m_enum_to_str;
+	
+	public ArrayList<Boolean> _columsAreNumbers = new ArrayList<Boolean>();
 
 	static double MISSING = Double.MAX_VALUE; // representation of missing values in the dataset
 
@@ -31,6 +33,9 @@ public class Matrix {
 
 	// Copies the specified portion of that matrix into this matrix
 	public Matrix(Matrix that, int rowStart, int colStart, int rowCount, int colCount) {
+		for(int i = colStart; i < colStart + colCount ; i++){
+			_columsAreNumbers.add(that._columsAreNumbers.get(i));
+		}
 		m_data = new ArrayList< double[] >();
 		for(int j = 0; j < rowCount; j++) {
 			double[] rowSrc = that.row(rowStart + j);
@@ -95,7 +100,6 @@ public class Matrix {
 			String line = s.nextLine().trim();
 			if (line.length() > 0 && line.charAt(0) != '%') {
 				if (!READDATA) {
-					
 					Scanner t = new Scanner(line);
 					String firstToken = t.next().toUpperCase();
 					
@@ -119,8 +123,10 @@ public class Matrix {
 						int vals = 0;
 						String type = u.next().trim().toUpperCase();
 						if (type.equals("REAL") || type.equals("CONTINUOUS") || type.equals("INTEGER")) {
+							_columsAreNumbers.add(true);
 						}
 						else {
+							_columsAreNumbers.add(false);
 							try {
 								String values = line.substring(line.indexOf("{")+1,line.indexOf("}"));
 								Scanner v = new Scanner(values);
@@ -206,17 +212,17 @@ public class Matrix {
 	public void set(int r, int c, double v) { row(r)[c] = v; }
 
 	// Returns the name of the specified attribute
-	String attrName(int col) { return m_attr_name.get(col); }
+	public String attrName(int col) { return m_attr_name.get(col); }
 
 	// Set the name of the specified attribute
-	void setAttrName(int col, String name) { m_attr_name.set(col, name); }
+	public void setAttrName(int col, String name) { m_attr_name.set(col, name); }
 
 	// Returns the name of the specified value
-	String attrValue(int attr, int val) { return m_enum_to_str.get(attr).get(val); }
+	public String attrValue(int attr, int val) { return m_enum_to_str.get(attr).get(val); }
 
 	// Returns the number of values associated with the specified attribute (or column)
 	// 0=continuous, 2=binary, 3=trinary, etc.
-	int valueCount(int col) { return m_enum_to_str.get(col).size(); }
+	public int valueCount(int col) { return m_enum_to_str.get(col).size(); }
 
 	// Shuffles the row order
 	void shuffle(Random rand) {
