@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.io.File;
 
+import clustering.HAC;
 import clustering.Kmeans;
 import knn.InstanceBasedLearner;
 import decision.DecisionTree;
@@ -33,12 +34,13 @@ public class MLSystemManager {
 		else if (model.equals("decisiontree")) return new DecisionTree();
 		else if (model.equals("knn")) return new InstanceBasedLearner();
 		else if (model.equals("clustering")) return new Kmeans();
+		else if (model.equals("hac")) return new HAC();
 		else throw new Exception("Unrecognized model: " + model);
 	}
 
 	public void run(String[] args) throws Exception {
 //		./MLSystemManager -L [LearningAlgorithm] -A [ARFF_File] -E random [PercentageForTraining]
-		args = new String[]{"-L", "clustering", "-A", "data/labor.arff", "-E", "training"};
+		args = new String[]{"-L", "clustering", "-A", "data/iris.arff", "-E", "training"};
 //		args = new String[]{"-L", "knn", "-A", "data/housingTraining.arff", "-E", "static", "0" , "-N"};
 //		args = new String[]{"-L", "knn", "-A", "data/magicTraining.arff", "-E", "static", "0"};
 //		args = new String[]{"-L", "baseline", "-A", "data/vowel.arff", "-E", "cross", "10", "-N"};
@@ -89,7 +91,7 @@ public class MLSystemManager {
 		if (evalMethod.equals("training"))
 		{
 			System.out.println("Calculating accuracy on training set...");
-			Matrix features = new Matrix(data, 0, 1, data.rows(), data.cols() - 2);
+			Matrix features = new Matrix(data, 0, 0, data.rows(), data.cols());
 			Matrix labels = new Matrix(data, 0, data.cols() - 1, data.rows(), 1);
 			Matrix confusion = new Matrix();
 			double startTime = System.currentTimeMillis();

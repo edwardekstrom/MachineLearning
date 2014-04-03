@@ -42,8 +42,12 @@ public abstract class SupervisedLearner {
 			double[] targ = labels.row(i);
 
 			predict(feat, targ);
-			sse += Math.pow(((Kmeans)this).calculateDistance(feat, targ), 2);
+			sse += Math.pow(this.calculateDistance(feat, targ), 2);
 		}
 		return sse;
+	}
+
+	public double calculateDistance(double[] feat, double[] targ) {
+		return 0;
 	}
 }

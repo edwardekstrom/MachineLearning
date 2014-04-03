@@ -1,7 +1,6 @@
 package clustering;
 
-import java.beans.FeatureDescriptor;
-import java.nio.channels.FileChannel.MapMode;
+
 import java.util.*;
 
 import toolKit.Matrix;
@@ -11,13 +10,13 @@ public class Kmeans extends SupervisedLearner {
 	private Map<Centroid, List<double[]>> _centroidToCluster;
 	private List<double[]> _instances;
 	private Set<Integer> _used;
-	private static int K = 5;
+	private static int K = 7;
 	private Matrix _features;
 	
 	
 	
 	public Kmeans(){
-		System.out.println(Double.MAX_VALUE);
+//		System.out.println(Double.MAX_VALUE);
 		_centroidToCluster = new TreeMap<Centroid, List<double[]>>();
 		_instances = new ArrayList<double[]>();
 		_used = new HashSet<Integer>();
@@ -36,7 +35,7 @@ public class Kmeans extends SupervisedLearner {
 		}
 		
 		for(int i = 0; i < K; i++){
-			Random rand = new Random(1);
+			Random rand = new Random();
 			int r = rand.nextInt();
 			r = r % (_instances.size() - 1);
 			while(_used.contains(r)){
@@ -47,8 +46,8 @@ public class Kmeans extends SupervisedLearner {
 			double[] row = new double[features.cols()];
 			
 			for(int j = 0; j<features.cols(); j++){
-//				row[j] = features.get(r, j);
-				row[j] = features.get(i, j);
+				row[j] = features.get(r, j);
+//				row[j] = features.get(i, j);
 			}
 			Centroid c = new Centroid();
 			c.array = row;
@@ -63,11 +62,12 @@ public class Kmeans extends SupervisedLearner {
 		boolean hasChanged = true;
 		
 		while(hasChanged){
-			double ssd = 0;
+//			double ssd = 0;
 			hasChanged = false;
-
+			String sizesString = "";
+			String SSEs = "";
 			for(Centroid key: _centroidToCluster.keySet()){
-				System.out.println("Centroid " + key.name + " = " + printArray(key.array));
+				System.out.println("Centroid " + key.name + " : " + printArray(key.array));
 			}
 			
 			for(int i = 0; i < _instances.size(); i++){
@@ -87,7 +87,9 @@ public class Kmeans extends SupervisedLearner {
 				_centroidToCluster.get(closestCentroid).add(curInstance);
 			}
 			System.out.println();
+			
 			for(Centroid key: _centroidToCluster.keySet()){
+				sizesString += "Centroid " + key.name + ": " + _centroidToCluster.get(key).size() +"\n";
 				List<double[]> curInstances = _centroidToCluster.get(key);
 				for(int j = 0; j<key.array.length; j++){
 					if(_features._columsAreNumbers.get(j)){
@@ -138,17 +140,39 @@ public class Kmeans extends SupervisedLearner {
 					}
 					
 				}
+				SSEs += "cluster " + key.name + " SSE : " + measureCluster(_centroidToCluster.get(key)) + "\n";
 			}
 			int i = 0;
+
+			System.out.print(sizesString);
+			System.out.print(SSEs);
 			try{
 				System.out.println(measureAccuracy(_features, _features, null));
 			}catch (Exception e){}
+			System.out.println( "----------------------------end----------------------------");
 			for(Centroid key: _centroidToCluster.keySet()){
 //				System.out.print(i + "=" + _centroidToCluster.get(key).size() + " ");
 				_centroidToCluster.put(key, new ArrayList<double[]>());
 				i++;
 			}
 		}
+	}
+	
+	double measureCluster(List<double[]> list){
+		double sse = 0.0;
+		for (int i = 0; i < list.size(); i++) {
+			double[] feat = list.get(i);
+			double[] targ = list.get(i).clone();
+			
+			
+			try {
+				predict(feat, targ);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			sse += Math.pow(this.calculateDistance(feat, targ), 2);
+		}
+		return sse;
 	}
 	
 	private String printArray(double[] array){
@@ -185,7 +209,7 @@ public class Kmeans extends SupervisedLearner {
 
 	}
 
-	
+	@Override
 	public double calculateDistance(double[] array1, double[] array2){
         double Sum = 0.0;
 		for (int i = 0; i < array1.length; i++) {

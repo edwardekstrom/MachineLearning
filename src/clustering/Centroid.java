@@ -1,8 +1,8 @@
 package clustering;
 
 public class Centroid implements Comparable<Centroid>{
-	double[] array;
-	String name;
+	public double[] array;
+	public String name;
 	public Centroid(){
 		array = null;
 		name = null;

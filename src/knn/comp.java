@@ -11,9 +11,9 @@ public class comp implements Comparator<double[]>{
 	
 	@Override
 	public int compare(double[] o1, double[] o2) {
-		if(InstanceBasedLearner.calculateDistance(_instance, o1) < InstanceBasedLearner.calculateDistance(_instance, o2))
+		if(InstanceBasedLearner.calculateDist(_instance, o1) < InstanceBasedLearner.calculateDist(_instance, o2))
 			return 1;
-		if(InstanceBasedLearner.calculateDistance(_instance, o1) > InstanceBasedLearner.calculateDistance(_instance, o2))
+		if(InstanceBasedLearner.calculateDist(_instance, o1) > InstanceBasedLearner.calculateDist(_instance, o2))
 			return -1;
 		return 0;
 	}
