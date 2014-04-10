@@ -90,7 +90,8 @@ public class Matrix {
 		m_str_to_enum = new ArrayList< TreeMap<String, Integer> >();
 		m_enum_to_str = new ArrayList< TreeMap<Integer, String> >();
 		boolean READDATA = false;
-		Scanner s = new Scanner(new File(filename));
+		File f = new File(filename);
+		Scanner s = new Scanner(f);
 		while (s.hasNext()) {
 			String line = s.nextLine().trim();
 			if (line.length() > 0 && line.charAt(0) != '%') {
@@ -110,10 +111,10 @@ public class Matrix {
 						m_enum_to_str.add(ets);
 
 						Scanner u = new Scanner(line);
-						if (line.indexOf("'") != -1) u.useDelimiter("'");
+//						if (line.indexOf("'") != -1) u.useDelimiter("'");
 						u.next();
 						String attributeName = u.next();
-						if (line.indexOf("'") != -1) attributeName = "'" + attributeName + "'";
+//						if (line.indexOf("'") != -1) attributeName = "'" + attributeName + "'";
 						m_attr_name.add(attributeName);
 
 						int vals = 0;

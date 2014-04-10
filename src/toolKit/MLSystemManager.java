@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.io.File;
 
-import knn.InstanceBasedLearner;
-import decision.DecisionTree;
+//import knn.InstanceBasedLearner;
+//import decision.DecisionTree;
 import backprop.NeuralNet;
 import perceptron.Perceptron;
 
@@ -22,28 +22,31 @@ public class MLSystemManager {
 	 */
 	public SupervisedLearner getLearner(String model, Random rand) throws Exception
 	{
-		int[] structure = {4, 8, 3};
+//		int[] structure = {4, 8, 3};
 //		int[] structure = {10, 20, 10};
-//		int[] structure = {10, 10, 2};
+//		int[] structure = {12, 24, 36}; //(8) 0
+//		int[] structure = {12, 24, 35}; //(7) 5,9
+//		int[] structure = {12, 24, 34}; //(6) 1,2,3,4,8
+//		int[] structure = {12, 24, 33}; //(5) 6,7,10,11
+//		int[] structure = {12, 24, 24};
+		int[] structure = {3, 12, 41}; //(streaming)
 		
 		if (model.equals("baseline")) return new BaselineLearner();
 		else if (model.equals("perceptron")) return new Perceptron(rand);
 		else if (model.equals("neuralnet")) return new NeuralNet(structure);
-		else if (model.equals("decisiontree")) return new DecisionTree();
-		else if (model.equals("knn")) return new InstanceBasedLearner();
+//		else if (model.equals("decisiontree")) return new DecisionTree();
+//		else if (model.equals("knn")) return new InstanceBasedLearner();
 		else throw new Exception("Unrecognized model: " + model);
 	}
 
 	public void run(String[] args) throws Exception {
 //		./MLSystemManager -L [LearningAlgorithm] -A [ARFF_File] -E random [PercentageForTraining]
-		args = new String[]{"-L", "knn", "-A", "data/magicTraining.arff", "-E", "static", "0" , "-N"};
-//		args = new String[]{"-L", "knn", "-A", "data/magicTraining.arff", "-E", "static", "0"};
-//		args = new String[]{"-L", "baseline", "-A", "data/vowel.arff", "-E", "cross", "10", "-N"};
-//		args = new String[]{"-L", "decisiontree", "-A", "data/cars.arff", "-E", "cross", "10", "-N"};
-//		args = new String[]{"-L", "neuralnet", "-A", "data/vowel.arff", "-E", "training"};
-//		args = new String[]{"-L", "decisiontree", "-A", "data/voting.arff", "-E", "training"};
+//		args = new String[]{"-L", "baseline", "-A", "data/parallel_machine_10_ascii.csv", "-E", "cross", "10", "-N"};
+//		args = new String[]{"-L", "neuralnet", "-A", "data/iris.arff", "-E", "cross", "10", "-N"};
+		args = new String[]{"-L", "neuralnet", "-A", "data/streaming_e_s_ascii.csv", "-E", "cross", "10", "-N"};
+//		args = new String[]{"-L", "neuralnet", "-A", "data/test.arff", "-E", "training"};
 //		args = new String[]{"-L", "neuralnet", "-A", "data/iris.arff", "-E", "random", ".75", "-N"};
-//		args = new String[]{"-L", "decisiontree", "-A", "data/cars.arff", "-E", "random", ".75", "-N"};
+//		args = new String[]{"-L", "neuralnet", "-A", "data/voting.arff", "-E", "random", ".75", "-N"};
 //		args = new String[]{"-L", "perceptron", "-A", "data/iris.arff", "-E", "cross", "10", "-N"};
 //		args = new String[]{"-L", "perceptron", "-A", "data/iris.arff", "-E", "training", "-N"};
 //		args = new String[]{"-L", "perceptron", "-A", "data/linearlySeparable.arff", "-E", "training", "-N"};
@@ -195,7 +198,7 @@ public class MLSystemManager {
 					elapsedTime += System.currentTimeMillis() - startTime;
 					double accuracy = learner.measureAccuracy(testFeatures, testLabels, null);
 					sumAccuracy += accuracy;
-//					System.out.println("Rep=" + j + ", Fold=" + i + ", Training Accuracy=" + trainAccuracy + ", Accuracy=" + accuracy);
+//					System.out.println("Rep=" + j + ", Fold=" + i + ", Accuracy=" + accuracy);
 					System.out.println(accuracy);
 				}
 			}

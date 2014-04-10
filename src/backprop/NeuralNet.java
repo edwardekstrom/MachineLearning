@@ -7,7 +7,7 @@ import toolKit.SupervisedLearner;
 public class NeuralNet extends SupervisedLearner {
 	static double LEARNING_RATE = .1;
 	static double MOMENTUM = 0;
-	static int EPOCHS_WITHOUT_UPDATE_LIMIT = 1000;
+	static int EPOCHS_WITHOUT_UPDATE_LIMIT = 100;
 	static double VALIDATION_SET_PERCENTAGE = .1;
 
 	private double _totalError;
@@ -59,7 +59,7 @@ public class NeuralNet extends SupervisedLearner {
 
 		double[][] instances = features.getTwoDemensionalArray();
 		double[][] labelsArray = labels.getTwoDemensionalArray();
-		double[][] instanceOutputs = new double[labelsArray.length][classes.size()];
+		double[][] instanceOutputs = new double[labelsArray.length][_layers[_numLayers - 1]._nodes.length];
 
 		for (int i = 0; i < labelsArray.length; i++) {
 			for (int j = 0; j < classes.size(); j++) {
@@ -85,6 +85,13 @@ public class NeuralNet extends SupervisedLearner {
 
 		for (int i = 0; i < _numTrainingInstances; i++) {
 			for (int j = 0; j < _layers[_numLayers - 1]._nodes.length; j++) {
+//				if(true){
+//					System.out.println("i = " + i);
+//					System.out.println("j = " + j);
+//					System.out.println(_targetOutput[i].length);
+//					System.out.println(instanceOutputs[i].length);
+//					
+//				}
 				_targetOutput[i][j] = instanceOutputs[i][j];
 			}
 		}
