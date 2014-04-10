@@ -68,14 +68,14 @@ public class DecisionTree extends SupervisedLearner {
 		
 		nodeCounts += nodeCount + "\n";
 		
-		PrintWriter writer = new PrintWriter("votingWPruning" + ".gv");
-		writer.print("digraph voting {\n");
-		writer.print(_rootNode.makeDot());
-		writer.print("\n}");
-		writer.close();
+//		PrintWriter writer = new PrintWriter("votingWPruning" + ".gv");
+//		writer.print("digraph voting {\n");
+//		writer.print(_rootNode.makeDot());
+//		writer.print("\n}");
+//		writer.close();
 		
 //		if(graphCount == 10){
-			System.out.println(nodeCounts);
+//			System.out.println(nodeCounts);
 //		}
 	}
 
