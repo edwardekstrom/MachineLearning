@@ -24,11 +24,11 @@ public class MLSystemManager {
 	{
 //		int[] structure = {4, 8, 3};
 //		int[] structure = {10, 20, 10};
+//		int[] structure = {12, 24, 24};
 //		int[] structure = {12, 24, 36}; //(8) 0
 //		int[] structure = {12, 24, 35}; //(7) 5,9
 //		int[] structure = {12, 24, 34}; //(6) 1,2,3,4,8
 //		int[] structure = {12, 24, 33}; //(5) 6,7,10,11
-//		int[] structure = {12, 24, 24};
 		int[] structure = {3, 12, 41}; //(streaming)
 		
 		if (model.equals("baseline")) return new BaselineLearner();
@@ -43,7 +43,7 @@ public class MLSystemManager {
 //		./MLSystemManager -L [LearningAlgorithm] -A [ARFF_File] -E random [PercentageForTraining]
 //		args = new String[]{"-L", "baseline", "-A", "data/parallel_machine_10_ascii.csv", "-E", "cross", "10", "-N"};
 //		args = new String[]{"-L", "neuralnet", "-A", "data/iris.arff", "-E", "cross", "10", "-N"};
-		args = new String[]{"-L", "decisiontree", "-A", "data/parallel_machine_11_ascii.csv", "-E", "cross", "10", "-N"};
+		args = new String[]{"-L", "decisiontree", "-A", "data/streaming_e_s_ascii.csv", "-E", "static", "data/ourPhrases.arff"};
 //		args = new String[]{"-L", "neuralnet", "-A", "data/test.arff", "-E", "training"};
 //		args = new String[]{"-L", "neuralnet", "-A", "data/iris.arff", "-E", "random", ".75", "-N"};
 //		args = new String[]{"-L", "neuralnet", "-A", "data/voting.arff", "-E", "random", ".75", "-N"};
@@ -106,33 +106,27 @@ public class MLSystemManager {
 		}
 		else if (evalMethod.equals("static"))
 		{
-			System.out.println("Calculating accuracy on a random hold-out set...");
-			double trainPercent = 1;
-			if (trainPercent < 0 || trainPercent > 1)
-				throw new Exception("Percentage for random evaluation must be between 0 and 1");
-			System.out.println("Percentage used for training: " + trainPercent);
-			System.out.println("Percentage used for testing: " + (1 - trainPercent));
-//			data.shuffle(rand);
-			int trainSize = (int)(trainPercent * data.rows());
-			Matrix trainFeatures = new Matrix(data, 0, 0, trainSize, data.cols() - 1);
-			Matrix trainLabels = new Matrix(data, 0, data.cols() - 1, trainSize, 1);
 			Matrix testData = new Matrix();
-			testData.loadArff("data/magicTest.arff");
-			if (normalize) testData.normalize();
-			Matrix testFeatures = new Matrix(testData, 0, 0, testData.rows(), testData.cols() - 1);
-			Matrix testLabels = new Matrix(testData, 0, testData.cols() - 1, testData.rows(), 1);
+			testData.loadArff(evalParameter);
+			if (normalize)
+				testData.normalize(); // BUG! This may normalize differently from the training data. It should use the same ranges for normalization!
+
+			System.out.println("Calculating accuracy on separate test set...");
+			System.out.println("Test set name: " + evalParameter);
+			System.out.println("Number of test instances: " + testData.rows());
+			Matrix features = new Matrix(data, 0, 0, data.rows(), data.cols() - 1);
+			Matrix labels = new Matrix(data, 0, data.cols() - 1, data.rows(), 1);
 			double startTime = System.currentTimeMillis();
-//			((NeuralNet)learner).setTestSet(testFeatures, testLabels);
-			learner.train(trainFeatures, trainLabels);
+			learner.train(features, labels);
 			double elapsedTime = System.currentTimeMillis() - startTime;
 			System.out.println("Time to train (in seconds): " + elapsedTime / 1000.0);
-			double trainAccuracy = 1.1;
+			double trainAccuracy = learner.measureAccuracy(features, labels, null);
 			System.out.println("Training set accuracy: " + trainAccuracy);
-//			System.out.println(trainAccuracy);
+			Matrix testFeatures = new Matrix(testData, 0, 0, testData.rows(), testData.cols() - 1);
+			Matrix testLabels = new Matrix(testData, 0, testData.cols() - 1, testData.rows(), 1);
 			Matrix confusion = new Matrix();
-			double testAccuracy = learner.measureAccuracy(testFeatures, testLabels, null);
+			double testAccuracy = learner.measureAccuracy(testFeatures, testLabels, confusion, true);
 			System.out.println("Test set accuracy: " + testAccuracy);
-//			System.out.println(testAccuracy);
 			if(printConfusionMatrix) {
 				System.out.println("\nConfusion matrix: (Row=target value, Col=predicted value)");
 				confusion.print();
@@ -190,6 +184,7 @@ public class MLSystemManager {
 					Matrix trainLabels = new Matrix(data, 0, data.cols() - 1, begin, 1);
 					Matrix testFeatures = new Matrix(data, begin, 0, end - begin, data.cols() - 1);
 					Matrix testLabels = new Matrix(data, begin, data.cols() - 1, end - begin, 1);
+					testLabels.print();
 					trainFeatures.add(data, end, 0, data.rows() - end);
 					trainLabels.add(data, end, data.cols() - 1, data.rows() - end);
 					double startTime = System.currentTimeMillis();

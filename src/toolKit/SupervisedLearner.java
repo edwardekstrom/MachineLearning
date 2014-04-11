@@ -79,5 +79,68 @@ public abstract class SupervisedLearner {
 			return (double)correctCount / features.rows();
 		}
 	}
+	
+	public double measureAccuracy(Matrix features, Matrix labels, Matrix confusion, boolean p) throws Exception
+	{
+		if(features.rows() != labels.rows())
+			throw(new Exception("Expected the features and labels to have the same number of rows"));
+		if(labels.cols() != 1)
+			throw(new Exception("Sorry, this method currently only supports one-dimensional labels"));
+		if(features.rows() == 0)
+			throw(new Exception("Expected at least one row"));
+
+		int labelValues = labels.valueCount(0);
+		if(labelValues == 0) // If the label is continuous...
+		{
+			System.out.println("MSE");
+			// The label is continuous, so measure root mean squared error
+			double[] pred = new double[1];
+			double sse = 0.0;
+			for(int i = 0; i < features.rows(); i++)
+			{
+				double[] feat = features.row(i);
+				double[] targ = labels.row(i);
+				pred[0] = 0.0; // make sure the prediction is not biassed by a previous prediction
+				predict(feat, pred);
+				double delta = targ[0] - pred[0];
+				sse += (delta * delta);
+			}
+			return Math.sqrt(sse / features.rows());
+		}
+		else
+		{
+//			System.out.println("predictive accuracy");
+			// The label is nominal, so measure predictive accuracy
+			if(confusion != null)
+			{
+				confusion.setSize(labelValues, labelValues);
+				for(int i = 0; i < labelValues; i++)
+					confusion.setAttrName(i, labels.attrValue(0, i));
+			}
+			int correctCount = 0;
+			double[] prediction = new double[1];
+			String predictionString = "";
+			String actualString = "";
+			for(int i = 0; i < features.rows(); i++)
+			{
+				double[] feat = features.row(i);
+				int targ = (int)labels.get(i, 0);
+				if(targ >= labelValues)
+					throw new Exception("The label is out of range");
+				predict(feat, prediction);
+				actualString+=labels.attrValue(0, targ);
+				predictionString+=labels.attrValue(0, (int)prediction[0]);
+				int pred = (int)prediction[0];
+				if(confusion != null)
+					confusion.set(targ, pred, confusion.get(targ, pred) + 1);
+				if(pred == targ)
+					correctCount++;
+			}
+			System.out.println("Actual String: " + actualString);
+			System.out.println("Predic String: " + predictionString);
+			
+			return (double)correctCount / features.rows();
+		}
+	}
 
 }
